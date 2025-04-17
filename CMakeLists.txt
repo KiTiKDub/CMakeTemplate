@@ -1,15 +1,24 @@
 cmake_minimum_required(VERSION 3.24)
 
+#Configure compiler and formats depending on OS
+if(APPLE)
+    set(FORMATS Standalone AU VST3)
+elseif(LINUX)
+    set(CMAKE_CXX_COMPILER "g++")
+    set(FORMATS Standalone LV2 VST3)
+else()
+    set(FORMATS Standalone VST3)
+endif()
+
 # Change to your project name
 project(CHANGE_THIS VERSION 1.0.0)
 
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# We're going to use CPM as our package manager to bring in JUCE
-# Check to see if we have CPM installed already.  Bring it in if we don't.
+# CPM kept failing and fetch content seems to work better
 include(FetchContent)
 FetchContent_Declare(
   juce
@@ -50,8 +59,10 @@ juce_add_plugin(${PROJECT_NAME}
         COPY_PLUGIN_AFTER_BUILD TRUE
         PLUGIN_MANUFACTURER_CODE 
         PLUGIN_CODE 
-        FORMATS VST3 AU Standalone
-        PRODUCT_NAME "CHANGE THIS"        
+        FORMATS "${FORMATS}"
+        PRODUCT_NAME "CHANGE THIS"
+        LV2_URI 
+        LV2_SHARED_LIBARARY_NAME        
 )
 
 # How we want our SourceFiles to appear in our IDE

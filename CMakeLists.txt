@@ -26,7 +26,13 @@ FetchContent_Declare(
   GIT_TAG master
   GIT_SHALLOW ON
 )
-FetchContent_MakeAvailable(juce)
+FetchContent_Declare(
+        kitik-utility
+        GIT_REPOSITORY https://github.com/KiTiKDub/KiTiK-JUCE-Utils.git
+        GIT_TAG master
+        GIT_SHALLOW ON
+)
+FetchContent_MakeAvailable(juce kitik-utility)
 
 # Make sure you include any new source files here
 set(SourceFiles
@@ -34,17 +40,6 @@ set(SourceFiles
         Source/PluginEditor.h
         Source/PluginProcessor.cpp
         Source/PluginProcessor.h
-	Source/GUI/KitikLevelMeter.h
-        Source/GUI/KitikLookAndFeel.cpp
-        Source/GUI/KitikLookAndFeel.h
-        Source/GUI/RotarySliderWithLabels.cpp
-        Source/GUI/RotarySliderWithLabels.h
-        Source/GUI/SliderWithLabels.cpp
-        Source/GUI/SliderWithLabels.h
-        Source/Utility/PresetManager.cpp
-        Source/Utility/PresetManager.h
-        Source/Utility/PresetPanel.cpp
-        Source/Utility/PresetPanel.h
 )
 
 # Change these to your own preferences
@@ -89,6 +84,7 @@ target_compile_definitions(${PROJECT_NAME}
 # JUCE libraries to bring into our project
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
+        kitik-utils
         Assets
         juce::juce_analytics
         juce::juce_audio_basics
@@ -109,3 +105,4 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_warning_flags
 )
 
+target_include_directories(kitik-utils PUBLIC ${kitik-utility_SOURCE_DIR})
